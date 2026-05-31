@@ -1,0 +1,123 @@
+{
+  "name": "tatie-preview",
+  "displayName": "Tatie Preview",
+  "description": "Preview Tatie standing sprite variants from TyranoScript projects in VS Code.",
+  "version": "0.1.3",
+  "publisher": "skyt-a",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "workspaceContains:data/others/plugin/tatie/settings.js",
+    "onCommand:tatiePreview.open",
+    "onCommand:tatiePreview.previewFromCursor",
+    "onCommand:tatiePreview.refresh",
+    "onCommand:tatiePreview.launchFromCurrentLine",
+    "onCommand:tatiePreview.restorePreviewEntry"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "tatiePreview.open",
+        "title": "Tatie: Open Preview"
+      },
+      {
+        "command": "tatiePreview.previewFromCursor",
+        "title": "Tatie: Preview From Cursor"
+      },
+      {
+        "command": "tatiePreview.refresh",
+        "title": "Tatie: Refresh Preview"
+      },
+      {
+        "command": "tatiePreview.launchFromCurrentLine",
+        "title": "Tatie: Launch Tyrano Preview From Current Line"
+      },
+      {
+        "command": "tatiePreview.restorePreviewEntry",
+        "title": "Tatie: Restore Tyrano Preview Entry"
+      }
+    ],
+    "configuration": {
+      "title": "Tatie Preview",
+      "properties": {
+        "tatiePreview.settingsPath": {
+          "type": "string",
+          "default": "data/others/plugin/tatie/settings.js",
+          "description": "Path to Tatie settings.js, relative to the workspace folder."
+        },
+        "tatiePreview.imageRoot": {
+          "type": "string",
+          "default": "data/fgimage",
+          "description": "Root folder used to resolve Tatie storage paths."
+        },
+        "tatiePreview.enableCodeLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show a Preview code lens above [tatie] tags in .ks files."
+        },
+        "tatiePreview.enableCompletion": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show completion candidates for [tatie] attributes in .ks files."
+        },
+        "tatiePreview.enableDiagnostics": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show diagnostics for missing Tatie name, appearance, and variant combinations in .ks files."
+        },
+        "tatiePreview.previewCommand": {
+          "type": "string",
+          "default": "npx",
+          "description": "Command used to launch the Tyrano preview."
+        },
+        "tatiePreview.previewArgs": {
+          "type": "array",
+          "default": [
+            "nw",
+            "."
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Arguments passed to the Tyrano preview command."
+        }
+      }
+    },
+    "menus": {
+      "editor/context": [
+        {
+          "command": "tatiePreview.previewFromCursor",
+          "when": "resourceExtname == .ks",
+          "group": "navigation"
+        },
+        {
+          "command": "tatiePreview.launchFromCurrentLine",
+          "when": "resourceExtname == .ks",
+          "group": "navigation"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "tatiePreview.previewFromCursor",
+          "when": "resourceExtname == .ks",
+          "group": "navigation"
+        },
+        {
+          "command": "tatiePreview.launchFromCurrentLine",
+          "when": "resourceExtname == .ks",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "package": "node scripts/package-vsix.mjs",
+    "test": "node test/settingsParser.test.js && node --check src/settingsParser.js && node --check src/extension.js && node --check scripts/package-vsix.mjs"
+  },
+  "license": "MIT"
+}
